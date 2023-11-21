@@ -1,21 +1,28 @@
+from os import environ as env
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-etvx9c(*uhxilv@*t5d4o0)!hp-2@88v@e_qp7$pw_a4imvqdk"
-DEBUG = True
-ALLOWED_HOSTS: list[str] = []
+load_dotenv(BASE_DIR / '../.env')
 
-
-# Application definition
+SECRET_KEY = env.get('SECRET_KEY')
+DEBUG = env.get('DEBUG', '').lower() == 'true'
+ALLOWED_HOSTS = env.get('ALLOWED_HOSTS', '').split()
 
 INSTALLED_APPS = [
+    # Default apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Outside apps
+    'taggit',
+    'rest_framework',
+    # Project apps
 ]
 
 MIDDLEWARE = [
@@ -54,7 +61,7 @@ WSGI_APPLICATION = "zoo_store.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "../db.sqlite3",
     }
 }
 
@@ -89,6 +96,25 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+
+# Media files
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = 'media'
+
+
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+
+    INTERNAL_IPS = ['127.0.0.1']
