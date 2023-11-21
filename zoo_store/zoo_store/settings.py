@@ -22,10 +22,14 @@ INSTALLED_APPS = [
     # Outside apps
     'taggit',
     'rest_framework',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     # Project apps
 ]
 
 MIDDLEWARE = [
+    # Default middleware
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -33,6 +37,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Outside middleware
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "zoo_store.urls"
@@ -106,6 +112,12 @@ MEDIA_ROOT = 'media'
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 
 if DEBUG:
