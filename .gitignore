@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-Makefile
+zoo_store/Makefile
 .Python
 build/
 develop-eggs/
