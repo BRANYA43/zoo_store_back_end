@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    volumes:
+      - static_value:/static/
+      - media_value:/media/
+      - ./zoo_store:/app
+    command: >
+      bash -c "
+      python manage.py makemigrations && 
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000
+      "
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+
+volumes:
+  static_value:
+  media_value:
