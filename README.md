@@ -1,12 +1,12 @@
 # Api_zoo_store
 
 ### Run the project
-```
+```commandline
 docker-compose up
 ```
 
 ### Close project
-```commandline
+```
 ctrl + C
 ```
 ```commandline

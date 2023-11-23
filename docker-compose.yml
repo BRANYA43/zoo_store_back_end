@@ -4,8 +4,8 @@ services:
   app:
     build: .
     volumes:
-      - static_value:/static/
-      - media_value:/media/
+      - static_value:/zoo_store/app/static/
+      - media_value:/zoo_store/app/media/
       - ./zoo_store:/app
     command: >
       bash -c "
