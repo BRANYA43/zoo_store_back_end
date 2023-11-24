@@ -23,9 +23,6 @@ INSTALLED_APPS = [
     'taggit',
     'rest_framework',
     'drf_spectacular',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     # Project apps
 ]
 
@@ -93,7 +90,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 
-LANGUAGE_CODE = "uk"
+LANGUAGE_CODE = 'en-us'
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
@@ -117,11 +114,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
 
 
 if DEBUG:
