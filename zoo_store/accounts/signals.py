@@ -4,8 +4,10 @@ from django.dispatch import receiver
 
 from .models import Profile
 
+User = get_user_model()
 
-@receiver(post_save, sender=get_user_model())
+
+@receiver(post_save, sender=User)
 def user_created(sender, instance, **kwargs):
     if not getattr(instance, 'profile', None):
         Profile.objects.create(user=instance)

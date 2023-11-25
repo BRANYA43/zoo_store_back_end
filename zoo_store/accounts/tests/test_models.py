@@ -43,7 +43,7 @@ class UserModelTest(ModelTest):
         for necessary_field in necessary_fields:
             self.assertIn(necessary_field, fields)
 
-    def test_user_dont_have_username_from_django(self):
+    def test_user_dont_have_username_field(self):
         fields = self.get_fields(User, only_name=True)
 
         self.assertNotIn('username', fields)

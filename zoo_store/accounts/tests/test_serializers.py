@@ -1,12 +1,17 @@
 from accounts.models import Profile
 from accounts.serializers import ProfileSerializer, UserSerializer
 from base import ModelTest, SerializerTest
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class ProfileTestSerializer(SerializerTest):
     def test_serializer_contain_all_profile_fields(self):
-        fields = ModelTest.get_fields(Profile, only_name=True)
-        self.assertSequenceEqual(self.get_fields(ProfileSerializer, only_names=True), fields)
+        model_fields = ModelTest.get_fields(Profile, only_name=True)
+        serializer_fields = self.get_fields(ProfileSerializer, only_names=True)
+
+        self.assert_field_lists_equal(serializer_fields, model_fields)
 
     def test_uuid_is_read_only(self):
         uuid = self.get_field(ProfileSerializer, 'uuid')
@@ -16,8 +21,11 @@ class ProfileTestSerializer(SerializerTest):
 class UserTestSerializer(SerializerTest):
 
     def test_serializer_contain_necessary_user_fields(self):
-        necessary_fields = ['uuid', 'email', 'last_login', 'joined']
-        self.assertSequenceEqual(self.get_fields(UserSerializer, only_names=True), necessary_fields)
+        model_fields = ModelTest.get_fields(User, only_name=True)
+        model_fields.remove('password')
+        serializer_fields = self.get_fields(UserSerializer, only_names=True)
+
+        self.assert_field_lists_equal(serializer_fields, model_fields)
 
     def test_uuid_is_read_only(self):
         uuid = self.get_field(UserSerializer, 'uuid')
