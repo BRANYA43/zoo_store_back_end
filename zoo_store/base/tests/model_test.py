@@ -1,7 +1,7 @@
-from django.test import TestCase
+from .custom_test_case import CustomTestCase
 
 
-class ModelTest(TestCase):
+class ModelTest(CustomTestCase):
     @staticmethod
     def get_field(model, field_name: str):
         return model._meta.get_field(field_name)

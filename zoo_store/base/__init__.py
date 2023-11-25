@@ -1,2 +1,2 @@
-from .model_test import ModelTest
-from .serializer_test import SerializerTest
+from .tests.model_test import ModelTest
+from .tests.serializer_test import SerializerTest

@@ -1,7 +1,7 @@
-from django.test import TestCase
+from .custom_test_case import CustomTestCase
 
 
-class SerializerTest(TestCase):
+class SerializerTest(CustomTestCase):
 
     @staticmethod
     def get_fields(serializer, *, only_names=False) -> dict | list[str]:
