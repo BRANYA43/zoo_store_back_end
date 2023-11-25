@@ -1,6 +1,6 @@
+from base.model_test import ModelTest
 from django.contrib.auth.models import PermissionsMixin
 
-from ...base.model_test import ModelTest
 from ..models import User
 
 
@@ -11,13 +11,13 @@ class UserModelTest(ModelTest):
 
     def test_user_has_necessary_fields(self):
         necessary_fields = ['uuid', 'email', 'password', 'last_login', 'joined']
-        fields = [field.name for field in self.get_fields(User)]
+        fields = self.get_fields(User, only_name=True)
 
         for necessary_field in necessary_fields:
             self.assertIn(necessary_field, fields)
 
     def test_user_dont_have_username_from_django(self):
-        fields = [field.name for field in self.get_fields(User)]
+        fields = self.get_fields(User, only_name=True)
 
         self.assertNotIn('username', fields)
 
