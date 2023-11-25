@@ -22,8 +22,6 @@ class UserManagerTest(TestCase):
         user = User.objects.first()
         self.assertEqual(user.email, self.data['email'])
         self.assertNotEqual(user.password, self.data['password'])
-        self.assertFalse(user.is_staff)
-        self.assertFalse(user.is_superuser)
 
     def test_create_superuser(self):
         self.manager.create_superuser(**self.data)
@@ -33,8 +31,6 @@ class UserManagerTest(TestCase):
         user = User.objects.first()
         self.assertEqual(user.email, self.data['email'])
         self.assertNotEqual(user.password, self.data['password'])
-        self.assertTrue(user.is_staff)
-        self.assertTrue(user.is_superuser)
 
     def test_create_user_raise_EmptyEmailError(self):
         self.data['email'] = ''

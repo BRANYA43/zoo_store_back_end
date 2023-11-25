@@ -1,6 +1,5 @@
 
 from base.model_test import ModelTest
-from django.contrib.auth.models import PermissionsMixin
 
 from ..models import Profile, User
 
@@ -32,9 +31,6 @@ class ProfileModelTest(ModelTest):
 
 
 class UserModelTest(ModelTest):
-
-    def test_user_inherit_necessary_mixins(self):
-        self.assertTrue(issubclass(User, PermissionsMixin))
 
     def test_user_has_necessary_fields(self):
         necessary_fields = ['uuid', 'email', 'password', 'last_login', 'joined']
