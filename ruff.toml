@@ -22,4 +22,5 @@ exclude = [
     "node_modules",
     "venv",
     'migrations',
+    '__init__.py',
 ]

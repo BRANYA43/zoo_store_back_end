@@ -4,6 +4,10 @@ from django.contrib.auth import get_user_model
 from ..models import Profile, User
 
 
+def create_test_user(email='user@example.com', **kwargs) -> User:
+    return get_user_model().objects.create_user(email=email, **kwargs)
+
+
 class ProfileModelTest(ModelTest):
     def test_profile_has_necessary_fields(self):
         necessary_fields = ['uuid', 'first_name', 'last_name', 'user']
