@@ -1,6 +1,16 @@
+from accounts.models import Profile
+from accounts.serializers import ProfileSerializer, UserSerializer
+from base import ModelTest, SerializerTest
 
-from accounts.serializers import UserSerializer
-from base import SerializerTest
+
+class ProfileTestSerializer(SerializerTest):
+    def test_serializer_contain_all_profile_fields(self):
+        fields = ['url'] + ModelTest.get_fields(Profile, only_name=True)
+        self.assertSequenceEqual(self.get_fields(ProfileSerializer, only_names=True), fields)
+
+    def test_uuid_is_read_only(self):
+        uuid = self.get_field(ProfileSerializer, 'uuid')
+        self.assertTrue(uuid.read_only)
 
 
 class UserTestSerializer(SerializerTest):
