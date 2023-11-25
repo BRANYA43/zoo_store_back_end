@@ -1,7 +1,34 @@
+
 from base.model_test import ModelTest
 from django.contrib.auth.models import PermissionsMixin
 
-from ..models import User
+from ..models import Profile, User
+
+
+class ProfileModelTest(ModelTest):
+    def test_profile_has_necessary_fields(self):
+        necessary_fields = ['uuid', 'first_name', 'last_name', 'user']
+        fields = self.get_fields(Profile, only_name=True)
+
+        for necessary_field in necessary_fields:
+            self.assertIn(necessary_field, fields)
+
+    def test_uuid_is_primary_key_for_profile(self):
+        uuid = self.get_field(User, 'uuid')
+        self.assertTrue(uuid.primary_key)
+
+    def test_profile_has_one_to_one_relation_with_user(self):
+        user = self.get_field(Profile, 'user')
+        self.assertTrue(user.one_to_one)
+        self.assertIs(user.related_model, User)
+
+    def test_profile_is_created_after_created_user(self):
+        User.objects.create(email='user@example.com')
+        self.assertEqual(Profile.objects.count(), 1)
+
+    def test_profile_gets_full_name(self):
+        profile = Profile(first_name='Rick', last_name='Sanchez')
+        self.assertEqual(profile.full_name, 'Rick Sanchez')
 
 
 class UserModelTest(ModelTest):
