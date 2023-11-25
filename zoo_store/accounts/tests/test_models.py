@@ -1,31 +1,23 @@
 from django.contrib.auth.models import PermissionsMixin
-from django.test import TestCase
 
+from ...base.model_test import ModelTest
 from ..models import User
 
 
-class UserModelTest(TestCase):
-
-    @staticmethod
-    def get_field(model, field_name: str):
-        return model._meta.get_field(field_name)
-
-    @staticmethod
-    def get_meta_attr(model, attr_name: str):
-        return getattr(model._meta, attr_name)
+class UserModelTest(ModelTest):
 
     def test_user_inherit_necessary_mixins(self):
         self.assertTrue(issubclass(User, PermissionsMixin))
 
     def test_user_has_necessary_fields(self):
         necessary_fields = ['uuid', 'email', 'password', 'last_login', 'joined']
-        fields = [field.name for field in User._meta.fields]
+        fields = [field.name for field in self.get_fields(User)]
 
         for necessary_field in necessary_fields:
             self.assertIn(necessary_field, fields)
 
     def test_user_dont_have_username_from_django(self):
-        fields = [field.name for field in User._meta.fields]
+        fields = [field.name for field in self.get_fields(User)]
 
         self.assertNotIn('username', fields)
 
