@@ -5,7 +5,7 @@ from base import ModelTest, SerializerTest
 
 class ProfileTestSerializer(SerializerTest):
     def test_serializer_contain_all_profile_fields(self):
-        fields = ['url'] + ModelTest.get_fields(Profile, only_name=True)
+        fields = ModelTest.get_fields(Profile, only_name=True)
         self.assertSequenceEqual(self.get_fields(ProfileSerializer, only_names=True), fields)
 
     def test_uuid_is_read_only(self):
@@ -16,7 +16,7 @@ class ProfileTestSerializer(SerializerTest):
 class UserTestSerializer(SerializerTest):
 
     def test_serializer_contain_necessary_user_fields(self):
-        necessary_fields = ['url', 'uuid', 'email', 'last_login', 'joined']
+        necessary_fields = ['uuid', 'email', 'last_login', 'joined']
         self.assertSequenceEqual(self.get_fields(UserSerializer, only_names=True), necessary_fields)
 
     def test_uuid_is_read_only(self):
