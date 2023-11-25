@@ -1,5 +1,5 @@
-
 from base.model_test import ModelTest
+from django.contrib.auth import get_user_model
 
 from ..models import Profile, User
 
@@ -63,3 +63,6 @@ class UserModelTest(ModelTest):
 
     def test_user_is_sorted_by_decreasing_joined_date(self):
         self.assertIn('-joined', self.get_meta_attr(User, 'ordering'))
+
+    def test_get_user_model_returns_user_of_accounts_app(self):
+        self.assertIs(get_user_model(), User)
