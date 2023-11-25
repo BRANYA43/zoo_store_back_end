@@ -1,5 +1,4 @@
-from uuid import uuid4
-
+from base.mixins import UUIDMixin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
@@ -7,8 +6,7 @@ from django.db import models
 from .managers import UserManager
 
 
-class User(AbstractBaseUser):
-    uuid = models.UUIDField(default=uuid4, unique=True, max_length=20, primary_key=True)
+class User(AbstractBaseUser, UUIDMixin):
     email = models.EmailField(unique=True, max_length=255)
     joined = models.DateTimeField(auto_now_add=True)
 
@@ -24,8 +22,7 @@ class User(AbstractBaseUser):
         return self.email
 
 
-class Profile(models.Model):
-    uuid = models.UUIDField(default=uuid4, unique=True, max_length=20, primary_key=True)
+class Profile(UUIDMixin):
     user = models.OneToOneField(to=get_user_model(), on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=100, null=True, default=None)
     last_name = models.CharField(max_length=100, null=True, default=None)
