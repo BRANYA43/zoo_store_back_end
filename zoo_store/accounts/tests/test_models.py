@@ -1,4 +1,4 @@
-from base.model_test import ModelTest
+from base import ModelTest
 from django.contrib.auth import get_user_model
 
 from ..models import Profile, User
