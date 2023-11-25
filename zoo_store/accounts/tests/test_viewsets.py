@@ -1,9 +1,38 @@
-from accounts.serializers import UserSerializer
+from accounts.models import Profile
+from accounts.serializers import ProfileSerializer, UserSerializer
 from accounts.tests import create_test_user
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
+
+
+class ProfileViewSetTest(APITestCase):
+    def test_view_retrieve_returns_correct_profile(self):
+        create_test_user()
+        profile = Profile.objects.first()
+
+        expected_data = ProfileSerializer(profile).data
+
+        response = self.client.get(reverse('profile-detail', args=[profile.uuid]))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertSequenceEqual(response.data, expected_data)
+
+    def test_view_update_updates_profile(self):
+        create_test_user()
+        profile = Profile.objects.first()
+
+        update_data = ProfileSerializer(profile).data
+        update_data['first_name'] = 'Rick'
+        update_data['last_name'] = 'Sanchez'
+
+        response = self.client.put(
+            reverse('profile-detail', args=[profile.uuid]),
+            data=update_data
+        )
+
+        self.assertSequenceEqual(response.data, update_data)
 
 
 class UserViewSetTest(APITestCase):
