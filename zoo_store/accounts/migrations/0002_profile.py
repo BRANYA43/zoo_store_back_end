@@ -9,15 +9,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("accounts", "0001_initial"),
+        ('accounts', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Profile",
+            name='Profile',
             fields=[
                 (
-                    "uuid",
+                    'uuid',
                     models.UUIDField(
                         default=uuid.uuid4,
                         primary_key=True,
@@ -26,18 +26,18 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "first_name",
+                    'first_name',
                     models.CharField(default=None, max_length=100, null=True),
                 ),
                 (
-                    "last_name",
+                    'last_name',
                     models.CharField(default=None, max_length=100, null=True),
                 ),
                 (
-                    "user",
+                    'user',
                     models.OneToOneField(
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="profile",
+                        related_name='profile',
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),

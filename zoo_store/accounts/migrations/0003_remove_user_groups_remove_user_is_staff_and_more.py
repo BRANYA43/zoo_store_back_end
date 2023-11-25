@@ -5,24 +5,24 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("accounts", "0002_profile"),
+        ('accounts', '0002_profile'),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name="user",
-            name="groups",
+            model_name='user',
+            name='groups',
         ),
         migrations.RemoveField(
-            model_name="user",
-            name="is_staff",
+            model_name='user',
+            name='is_staff',
         ),
         migrations.RemoveField(
-            model_name="user",
-            name="is_superuser",
+            model_name='user',
+            name='is_superuser',
         ),
         migrations.RemoveField(
-            model_name="user",
-            name="user_permissions",
+            model_name='user',
+            name='user_permissions',
         ),
     ]

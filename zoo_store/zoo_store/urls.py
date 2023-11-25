@@ -5,7 +5,7 @@ from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path(
         'api/schema/redoc/',
@@ -22,7 +22,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += [
-        path("__debug__/", include("debug_toolbar.urls")),
+        path('__debug__/', include('debug_toolbar.urls')),
     ]
 
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
