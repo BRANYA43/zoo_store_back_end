@@ -1,6 +1,7 @@
-from base.test_cases import ModelTestCase
+from base.test_cases import ModelTestCase, SerializerTestCase
 from base.test_cases.test_case import TestCase
 from django.db import models
+from rest_framework import serializers
 
 
 class TestCaseTest(TestCase):
@@ -62,5 +63,21 @@ class ModelTestCaseTest(ModelTestCase):
         expected_fields = [field.name for field in self.Model._meta.fields]
         self.assertSequenceEqual(fields, expected_fields)
 
-    def test_get_meta_attr_gets_correct_attr(self):
-        self.assertTrue(self.get_meta_attr(self.Model, 'abstract'))
+
+class SerializerTestCaseTest(SerializerTestCase):
+    def setUp(self) -> None:
+        class Serializer(serializers.Serializer):
+            field1 = serializers.Field()
+            field2 = serializers.Field()
+
+        self.Serializer = Serializer
+
+    def test_get_field_gets_correct_field(self):
+        field = self.get_field(self.Serializer, 'field1')
+        self.assertIsInstance(field, serializers.Field)
+        self.assertEqual(field.field_name, 'field1')
+
+    def test_get_fields_gets_correct_field_name_list(self):
+        fields = self.get_field_names(self.Serializer)
+        expected_fields = list(self.Serializer().fields)
+        self.assertSequenceEqual(fields, expected_fields)
