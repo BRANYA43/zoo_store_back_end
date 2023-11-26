@@ -1,4 +1,6 @@
+from base.test_cases import ModelTestCase
 from base.test_cases.test_case import TestCase
+from django.db import models
 
 
 class TestCaseTest(TestCase):
@@ -23,3 +25,31 @@ class TestCaseTest(TestCase):
             self.assertFieldNamesEqual(fields1, fields2)
 
 
+class ModelTestCaseTest(ModelTestCase):
+
+    def setUp(self) -> None:
+        class Model(models.Model):
+            field1 = models.Field()
+            field2 = models.Field()
+
+            class Meta:
+                abstract = True
+
+        self.Model = Model
+
+    def test_get_field_gets_correct_field(self):
+        field = self.get_field(self.Model, 'field1')
+        self.assertIsInstance(field, models.Field)
+        self.assertEqual(field.name, 'field1')
+
+    def test_get_fields_gets_correct_field_list(self):
+        fields = self.get_fields(self.Model)
+        self.assertSequenceEqual(fields, self.Model._meta.fields)
+
+    def test_get_fields_gets_correct_field_name_list(self):
+        fields = self.get_fields(self.Model, only_names=True)
+        expected_fields = [field.name for field in self.Model._meta.fields]
+        self.assertSequenceEqual(fields, expected_fields)
+
+    def test_get_meta_attr_gets_correct_attr(self):
+        self.assertTrue(self.get_meta_attr(self.Model, 'abstract'))
