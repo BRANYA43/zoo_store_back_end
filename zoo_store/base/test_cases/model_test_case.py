@@ -12,7 +12,3 @@ class ModelTestCase(TestCase):
         if only_names:
             return [field.name for field in fields]
         return fields
-
-    @staticmethod
-    def get_meta_attr(model, attr_name: str):
-        return getattr(model._meta, attr_name)

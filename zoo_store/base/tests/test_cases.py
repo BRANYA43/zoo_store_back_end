@@ -4,6 +4,16 @@ from django.db import models
 
 
 class TestCaseTest(TestCase):
+    def setUp(self) -> None:
+        class Model(models.Model):
+            class Meta:
+                abstract = True
+
+        self.Model = Model
+
+    def test_get_meta_attr_gets_correct_attr(self):
+        self.assertTrue(self.get_meta_attr(self.Model, 'abstract'))
+
     def test_assertFieldNamesEqual_doesnt_raise_error(self):
         fields1 = ['1', '2', '3']
         fields2 = ['3', '2', '1']
@@ -44,7 +54,8 @@ class ModelTestCaseTest(ModelTestCase):
 
     def test_get_fields_gets_correct_field_list(self):
         fields = self.get_fields(self.Model)
-        self.assertSequenceEqual(fields, self.Model._meta.fields)
+        expected_fields = self.Model._meta.fields
+        self.assertSequenceEqual(fields, expected_fields)
 
     def test_get_fields_gets_correct_field_name_list(self):
         fields = self.get_fields(self.Model, only_names=True)
