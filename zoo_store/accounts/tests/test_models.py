@@ -3,6 +3,10 @@ from base.test_cases import ModelTestCase
 from django.contrib.auth import get_user_model
 
 
+def create_test_user(email='rick.sanchez@test.com', password='qwe123!@#', **extra_fields):
+    return get_user_model().objects.create_user(email=email, password=password, **extra_fields)
+
+
 class UserModelTest(ModelTestCase):
 
     def test_model_has_necessary_fields(self):
