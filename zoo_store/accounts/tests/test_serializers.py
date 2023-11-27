@@ -25,6 +25,9 @@ class ProfileSerializerTest(SerializerTestCase):
 
 
 class UserCreateSerializerTest(SerializerTestCase):
+    def serializer_inherit_UserSerializer(self):
+        self.assertTrue(issubclass(UserCreateSerializer, UserSerializer))
+
     def test_serializer_has_necessary_model_fields(self):
         necessary_fields = ['url', 'uuid', 'email', 'password']
         serializer_fields = self.get_field_names(UserCreateSerializer)
@@ -70,6 +73,10 @@ class UserSerializerTest(SerializerTestCase):
     def test_password_is_write_only(self):
         password = self.get_field(UserSerializer, 'password')
         self.assertTrue(password.write_only)
+
+    def test_password_doesnt_trim_whitespace(self):
+        password = self.get_field(UserSerializer, 'password')
+        self.assertTrue(password.trim_whitespace)
 
     def test_last_login_is_read_only(self):
         last_login = self.get_field(UserSerializer, 'last_login')

@@ -27,6 +27,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'email': {'style': {'placeholder': 'email@example.com'}},
             'password': {
                 'write_only': True,
+                'trim_whitespace': True,
                 'style': {'input_type': 'password'}
             },
             'last_login': {'read_only': True},
