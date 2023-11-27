@@ -26,3 +26,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             user.set_password(password)
             user.save()
         return user
+
+
+class UserCreateSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        fields = ['url', 'uuid', 'email', 'password']
+
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
