@@ -1,7 +1,20 @@
+from accounts.models import Profile
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 User = get_user_model()
+
+
+class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['url', 'uuid', 'user', 'first_name', 'last_name']
+        extra_kwargs = {
+            'uuid': {'read_only': True},
+            'user': {'read_only': True},
+            'first_name': {'style': {'placeholder': 'Rick'}},
+            'last_name': {'style': {'placeholder': 'Sanchez'}},
+        }
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

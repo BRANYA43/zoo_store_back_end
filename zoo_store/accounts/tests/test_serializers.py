@@ -1,10 +1,27 @@
-from accounts.serializers import UserCreateSerializer, UserSerializer
+from accounts.models import Profile
+from accounts.serializers import ProfileSerializer, UserCreateSerializer, UserSerializer
 from accounts.tests import create_test_user
 from base.test_cases import ModelTestCase, SerializerTestCase
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 get_model_fields = ModelTestCase.get_fields
+
+
+class ProfileSerializerTest(SerializerTestCase):
+    def test_serializer_has_necessary_model_fields(self):
+        necessary_fields = ['url'] + get_model_fields(Profile, only_names=True)
+        serializer_fields = self.get_field_names(ProfileSerializer)
+
+        self.assertFieldNamesEqual(serializer_fields, necessary_fields)
+
+    def test_uuid_is_read_only(self):
+        uuid = self.get_field(ProfileSerializer, 'uuid')
+        self.assertTrue(uuid.read_only)
+
+    def test_user_is_read_only(self):
+        user = self.get_field(ProfileSerializer, 'user')
+        self.assertTrue(user.read_only)
 
 
 class UserCreateSerializerTest(SerializerTestCase):
