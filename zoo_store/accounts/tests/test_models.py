@@ -35,9 +35,11 @@ class ProfileModelTest(ModelTestCase):
 
     def test_profile_is_deleted_after_deleting_user(self):
         user = create_test_user()
-        Profile.objects.create(user=user)
+
+        self.assertEqual(Profile.objects.count(), 1)
 
         user.delete()
+
         self.assertEqual(Profile.objects.count(), 0)
 
     def test_profile_gets_full_name(self):
@@ -46,6 +48,13 @@ class ProfileModelTest(ModelTestCase):
         expected_full_name = f"{data['first_name']} {data['last_name']}"
 
         self.assertEqual(profile.full_name, expected_full_name)
+
+    def test_profile_is_created_after_creating_user(self):
+        user = create_test_user()
+        self.assertEqual(Profile.objects.count(), 1)
+
+        profile = Profile.objects.first()
+        self.assertEqual(profile.user.uuid, user.uuid)
 
 
 class UserModelTest(ModelTestCase):
