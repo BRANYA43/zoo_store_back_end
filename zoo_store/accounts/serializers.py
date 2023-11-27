@@ -1,8 +1,21 @@
 from accounts.models import Profile
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
 User = get_user_model()
+
+
+class AuthTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Token
+        fields = ['key']
+        extra_kwargs = {
+            'key': {
+                'label': 'token',
+                'read_only': True,
+            },
+        }
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):

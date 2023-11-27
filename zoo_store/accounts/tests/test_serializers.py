@@ -1,11 +1,27 @@
 from accounts.models import Profile
-from accounts.serializers import ProfileSerializer, UserCreateSerializer, UserSerializer
+from accounts.serializers import AuthTokenSerializer, ProfileSerializer, UserCreateSerializer, UserSerializer
 from accounts.tests import create_test_user
 from base.test_cases import ModelTestCase, SerializerTestCase
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 get_model_fields = ModelTestCase.get_fields
+
+
+class AuthTokenSerializerTest(SerializerTestCase):
+    def test_serializer_has_necessary_model_fields(self):
+        necessary_fields = ['key']
+        serializer_fields = self.get_field_names(AuthTokenSerializer)
+
+        self.assertFieldNamesEqual(serializer_fields, necessary_fields)
+
+    def test_key_is_read_only(self):
+        key = self.get_field(AuthTokenSerializer, 'key')
+        self.assertTrue(key.read_only)
+
+    def test_key_has_label_as_token(self):
+        key = self.get_field(AuthTokenSerializer, 'key')
+        self.assertEqual(key.label, 'token')
 
 
 class ProfileSerializerTest(SerializerTestCase):
