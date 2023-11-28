@@ -6,6 +6,8 @@ class IsOwner(BasePermission):
         return bool(request.user.is_authenticated or request.user.is_staff)
 
     def has_object_permission(self, request, view, obj):
+        if hasattr(obj, 'user'):
+            return request.user.uuid == obj.user.uuid
         return request.user.uuid == obj.uuid
 
 
