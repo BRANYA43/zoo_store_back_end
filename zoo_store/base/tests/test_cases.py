@@ -1,7 +1,16 @@
-from base.test_cases import ModelTestCase, SerializerTestCase
+from unittest.mock import Mock
+
+from base.test_cases import ModelTestCase, SerializerTestCase, ViewSetTestCase
 from base.test_cases.test_case import TestCase
+from base.test_cases.view_set_test_case import (
+    INCORRECT_VALUE_ERROR_MSG,
+    NOT_ANONYMOUS_ERROR_MSG,
+    NOT_AUTHENTICATED_ERROR_MSG,
+    NOT_MATCH_STATUS_CODE_ERROR_MSG,
+    NOT_STAFF_ERROR_MSG,
+)
 from django.db import models
-from rest_framework import serializers
+from rest_framework import serializers, status
 
 
 class TestCaseTest(TestCase):
@@ -81,3 +90,53 @@ class SerializerTestCaseTest(SerializerTestCase):
         fields = self.get_field_names(self.Serializer)
         expected_fields = list(self.Serializer().fields)
         self.assertSequenceEqual(fields, expected_fields)
+
+
+class ViewTestCaseTest(ViewSetTestCase):
+    def setUp(self) -> None:
+        self.mock_response = Mock()
+
+    def test_assertStatusCodeEqual(self):
+        self.mock_response.status_code = status.HTTP_200_OK
+
+        self.assertStatusCodeEqual(self.mock_response, status.HTTP_200_OK)
+
+    def test_assertStatusCodeEqual_raise_error(self):
+        self.mock_response.status_code = status.HTTP_404_NOT_FOUND
+
+        with self.assertRaisesRegexp(AssertionError, NOT_MATCH_STATUS_CODE_ERROR_MSG):
+            self.assertStatusCodeEqual(self.mock_response, status.HTTP_200_OK)
+
+    def test_assertUserIs_raise_error_if_incorrect_value_is_user_is(self):
+        with self.assertRaisesRegexp(AssertionError, INCORRECT_VALUE_ERROR_MSG):
+            self.assertUserIs(self.mock_response, 'icorrect_value')
+
+    def test_assertUserIs_valid_if_user_is_anonymous(self):
+        self.mock_response.wsgi_request.user.is_anonymous = True
+        self.assertUserIs(self.mock_response, 'anonymous')
+
+    def test_assertUserIs_raise_error_if_user_is_not_anonymous(self):
+        self.mock_response.wsgi_request.user.is_anonymous = False
+
+        with self.assertRaisesRegexp(AssertionError, NOT_ANONYMOUS_ERROR_MSG):
+            self.assertUserIs(self.mock_response, 'anonymous')
+
+    def test_assertUserIs_valid_if_user_is_authenticated(self):
+        self.mock_response.wsgi_request.user.is_authenticated = True
+        self.assertUserIs(self.mock_response, 'authenticated')
+
+    def test_assertUserIs_raise_error_if_user_is_not_authenticated(self):
+        self.mock_response.wsgi_request.user.is_authenticated = False
+
+        with self.assertRaisesRegexp(AssertionError, NOT_AUTHENTICATED_ERROR_MSG):
+            self.assertUserIs(self.mock_response, 'authenticated')
+
+    def test_assertUserIs_valid_if_user_is_staff(self):
+        self.mock_response.wsgi_request.user.is_staff = True
+        self.assertUserIs(self.mock_response, 'staff')
+
+    def test_assertUserIs_raise_error_if_user_is_not_staff(self):
+        self.mock_response.wsgi_request.user.is_staff = False
+
+        with self.assertRaisesRegexp(AssertionError, NOT_STAFF_ERROR_MSG):
+            self.assertUserIs(self.mock_response, 'staff')
