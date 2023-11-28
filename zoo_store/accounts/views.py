@@ -1,10 +1,17 @@
 from accounts import permissions, serializers
+from accounts.models import Profile
 from django.contrib.auth import get_user_model
 from rest_framework import permissions as rest_permissions
 from rest_framework import viewsets
 
 User = get_user_model()
 
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = serializers.ProfileSerializer
+    permission_classes = [permissions.IsOwner]
+    http_method_names = ['get', 'patch']
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
