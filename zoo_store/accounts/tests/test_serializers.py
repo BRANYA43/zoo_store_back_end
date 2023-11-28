@@ -99,8 +99,6 @@ class ProfileSerializerTest(SerializerTestCase):
 
 
 class UserCreateSerializerTest(SerializerTestCase):
-    def serializer_inherit_UserSerializer(self):
-        self.assertTrue(issubclass(UserCreateSerializer, UserSerializer))
 
     def test_serializer_has_necessary_model_fields(self):
         necessary_fields = ['url', 'uuid', 'email', 'password']
@@ -112,9 +110,10 @@ class UserCreateSerializerTest(SerializerTestCase):
         uuid = self.get_field(UserCreateSerializer, 'uuid')
         self.assertTrue(uuid.read_only)
 
-    def test_password_is_write_only(self):
-        password = self.get_field(UserCreateSerializer, 'password')
+    def test_password_has_necessary_settings(self):
+        password = self.get_field(UserSerializer, 'password')
         self.assertTrue(password.write_only)
+        self.assertFalse(password.trim_whitespace)
 
     def test_create_creates_user_as_in_registration(self):
         data = {
@@ -144,13 +143,19 @@ class UserSerializerTest(SerializerTestCase):
         uuid = self.get_field(UserSerializer, 'uuid')
         self.assertTrue(uuid.read_only)
 
-    def test_password_is_write_only(self):
+    def test_profile_is_read_only(self):
+        profile = self.get_field(UserSerializer, 'profile')
+        self.assertTrue(profile.read_only)
+
+    def test_email_is_not_required(self):
+        email = self.get_field(UserSerializer, 'email')
+        self.assertFalse(email.required)
+
+    def test_password_has_necessary_settings(self):
         password = self.get_field(UserSerializer, 'password')
         self.assertTrue(password.write_only)
-
-    def test_password_doesnt_trim_whitespace(self):
-        password = self.get_field(UserSerializer, 'password')
-        self.assertTrue(password.trim_whitespace)
+        self.assertFalse(password.trim_whitespace)
+        self.assertFalse(password.required)
 
     def test_last_login_is_read_only(self):
         last_login = self.get_field(UserSerializer, 'last_login')
