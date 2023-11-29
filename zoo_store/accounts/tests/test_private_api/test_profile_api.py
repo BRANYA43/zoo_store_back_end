@@ -48,7 +48,7 @@ class ProfileRetrieveViewTest(ViewSetTestCase):
         self.assertUserIs(response, 'staff')
 
     def test_view_returns_correct_user(self, mock):
-        context = {'request': self.get_request(self.url)}
+        context = {'request': self.get_fake_request(self.url)}
         expected_data = self.serializer_class(self.user.profile, context=context).data
 
         response = self.client.get(self.url)
@@ -100,7 +100,7 @@ class ProfileUpdateViewTest(ViewSetTestCase):
     def test_view_updates_chosen_user(self, mock):
         response = self.client.patch(self.url, self.data, patrial=True, format='json')
         self.user.profile.refresh_from_db()
-        context = {'request': self.get_request(self.url)}
+        context = {'request': self.get_fake_request(self.url)}
         expected_data = self.serializer_class(self.user.profile, context=context).data
 
         self.assertSequenceEqual(response.data, expected_data)

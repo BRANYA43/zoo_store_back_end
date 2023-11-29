@@ -1,6 +1,8 @@
 from typing import Literal
 
+from django.core.handlers.wsgi import WSGIRequest
 from django.test import RequestFactory
+from rest_framework.response import Response
 from rest_framework.test import APITestCase
 
 NOT_ANONYMOUS_ERROR_MSG = 'User is not anonymous user'
@@ -13,13 +15,22 @@ NOT_MATCH_STATUS_CODE_ERROR_MSG = 'Status code don\'t match.'
 class ViewSetTestCase(APITestCase):
 
     @staticmethod
-    def get_request(url: str):
+    def get_fake_request(url: str) -> WSGIRequest:
+        """
+        Returns the fake request by url.
+        :param url: The expected url of view or view set.
+        """
         return RequestFactory().get(url)
 
-    def assertUserIs(self, response, user_is: Literal['anonymous', 'authenticated', 'staff']):
-
+    def assertUserIs(self, response: Response, user_status: Literal['anonymous', 'authenticated', 'staff']):
+        """
+        Validates the user status associated with an HTTP response.
+        :param response: The HTTP response object associated with the completed HTTP request.
+        :param user_status: A literal specifying the expected user status. User status can only be one o 'anonymous',
+                           'authenticated' or 'staff'
+        """
         user = response.wsgi_request.user
-        match user_is:
+        match user_status:
             case 'anonymous':
                 self.assertTrue(user.is_anonymous, NOT_ANONYMOUS_ERROR_MSG)
             case 'authenticated':
@@ -29,5 +40,10 @@ class ViewSetTestCase(APITestCase):
             case _:
                 self.fail(INCORRECT_VALUE_ERROR_MSG)
 
-    def assertStatusCodeEqual(self, response, status_code):
+    def assertStatusCodeEqual(self, response: Response, status_code: int):
+        """
+        Validates the status code of HTTP response.
+        :param response: The HTTP response object associated with the completed HTTP request.
+        :param status_code: The expected HTTP status code.
+        """
         self.assertEqual(response.status_code, status_code, NOT_MATCH_STATUS_CODE_ERROR_MSG)

@@ -44,7 +44,7 @@ class UserListViewTest(ViewSetTestCase):
     def test_view_returns_user_list(self, mock):
         for i in range(3):
             create_test_user(email=f'user{i}@test.com')
-        context = {'request': self.get_request(self.url)}
+        context = {'request': self.get_fake_request(self.url)}
         expected_data = self.serializer_class(User.objects.all(), context=context, many=True).data
 
         response = self.client.get(self.url)
@@ -93,7 +93,7 @@ class UserRetrieveViewTest(ViewSetTestCase):
         self.assertUserIs(response, 'staff')
 
     def test_view_returns_correct_user(self, mock):
-        context = {'request': self.get_request(self.url)}
+        context = {'request': self.get_fake_request(self.url)}
         expected_data = self.serializer_class(self.user, context=context).data
 
         response = self.client.get(self.url)
@@ -143,7 +143,7 @@ class UserUpdateViewTest(ViewSetTestCase):
 
     def test_view_updates_chosen_user(self, mock):
         response = self.client.put(self.url, self.data, patrial=True, format='json')
-        context = {'request': self.get_request(self.url)}
+        context = {'request': self.get_fake_request(self.url)}
         expected_data = UserSerializer(self.user, context=context).data
 
         self.assertSequenceEqual(response.data, expected_data)
