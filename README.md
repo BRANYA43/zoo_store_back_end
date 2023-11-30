@@ -12,10 +12,18 @@ ctrl + C
 ```commandline
 docker-compose down -v
 ```
-### Available documentations
 ***
+### Available documentations
 #### Swagger
 - http://127.0.0.1:8000/api/schema/swagger-ui/
 
 #### Redoc
 - http://127.0.0.1:8000/api/schema/redoc/
+***
+### Available admin environ
+
+- http://127.0.0.1:8000/admin
+```text
+Email: admin@admin.net
+Password: admin
+```
