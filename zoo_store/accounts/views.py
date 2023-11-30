@@ -1,5 +1,7 @@
 from accounts import permissions, serializers
 from accounts.models import Profile
+
+from django.db.models import Prefetch
 from django.contrib.auth import get_user_model
 from rest_framework import permissions as rest_permissions
 from rest_framework import viewsets
@@ -13,8 +15,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsOwner]
     http_method_names = ['get', 'patch']
 
+
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.prefetch_related(
+        Prefetch('profile', queryset=Profile.objects.all())
+    ).all()
     create_serializer_class = serializers.UserCreateSerializer
     manage_serializer_class = serializers.UserSerializer
     create_permissions_classes = [rest_permissions.AllowAny]
