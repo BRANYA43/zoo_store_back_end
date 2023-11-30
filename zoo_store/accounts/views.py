@@ -1,8 +1,7 @@
 from accounts import permissions, serializers
 from accounts.models import Profile
-
-from django.db.models import Prefetch
 from django.contrib.auth import get_user_model
+from django.db.models import Prefetch
 from rest_framework import permissions as rest_permissions
 from rest_framework import viewsets
 

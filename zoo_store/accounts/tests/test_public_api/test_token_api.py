@@ -1,7 +1,7 @@
-from base.test_cases.view_set_test_case import ViewSetTestCase
-from rest_framework.reverse import reverse
 from accounts.tests import create_test_user
+from base.test_cases.view_set_test_case import ViewSetTestCase
 from rest_framework import status
+from rest_framework.reverse import reverse
 
 
 class TokenCreateTest(ViewSetTestCase):
@@ -21,7 +21,7 @@ class TokenCreateTest(ViewSetTestCase):
         self.assertUserIs(response, 'anonymous')
     
     def test_create_token_for_registered_user(self):
-        user = create_test_user('rick.sanchez@test.com', 'qwe123!@#')
+        create_test_user('rick.sanchez@test.com', 'qwe123!@#')
         
         response = self.client.post(self.url, self.data)
         

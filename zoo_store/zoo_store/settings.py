@@ -1,6 +1,6 @@
+from datetime import timedelta
 from os import environ as env
 from pathlib import Path
-from datetime import timedelta
 
 from dotenv import load_dotenv
 

@@ -17,7 +17,7 @@ repos:
           '--profile=black',
           '--line-length=120',
           '--multi-line=3',
-          '--trailing-comma'
+          '--trailing-comma',
         ]
   - repo: local
     hooks:

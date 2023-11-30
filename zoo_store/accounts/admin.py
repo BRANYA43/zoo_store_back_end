@@ -1,9 +1,7 @@
+from accounts.models import Profile
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
-
-
-from accounts.models import Profile, User
+from django.contrib.auth.models import Group
 
 
 class ProfileInline(admin.StackedInline):
