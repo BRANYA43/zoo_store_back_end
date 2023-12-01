@@ -23,7 +23,7 @@ class UserListViewTest(ViewSetTestCase):
 
         response = self.client.get(self.url)
 
-        self.assertStatusCodeEqual(response, status.HTTP_403_FORBIDDEN)
+        self.assertStatusCodeEqual(response, status.HTTP_401_UNAUTHORIZED)
         self.assertUserIs(response, 'anonymous')
 
     def test_view_is_available_for_owner(self, mock):
@@ -65,7 +65,7 @@ class UserRetrieveViewTest(ViewSetTestCase):
 
         response = self.client.get(self.url)
 
-        self.assertStatusCodeEqual(response, status.HTTP_403_FORBIDDEN)
+        self.assertStatusCodeEqual(response, status.HTTP_401_UNAUTHORIZED)
         self.assertUserIs(response, 'anonymous')
 
     def test_view_is_not_available_for_not_owner(self, mock):
@@ -114,7 +114,7 @@ class UserUpdateViewTest(ViewSetTestCase):
 
         response = self.client.put(self.url, self.data, patrial=True, format='json')
 
-        self.assertStatusCodeEqual(response, status.HTTP_403_FORBIDDEN)
+        self.assertStatusCodeEqual(response, status.HTTP_401_UNAUTHORIZED)
         self.assertUserIs(response, 'anonymous')
 
     def test_view_is_not_available_for_not_owner(self, mock):
@@ -160,7 +160,7 @@ class UserDestroyViewTest(ViewSetTestCase):
 
         response = self.client.delete(self.url)
 
-        self.assertStatusCodeEqual(response, status.HTTP_403_FORBIDDEN)
+        self.assertStatusCodeEqual(response, status.HTTP_401_UNAUTHORIZED)
         self.assertUserIs(response, 'anonymous')
 
     def test_view_is_not_available_for_not_owner(self):
