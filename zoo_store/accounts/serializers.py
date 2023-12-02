@@ -19,7 +19,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'uuid', 'profile', 'email', 'password', 'is_active', 'is_staff', 'is_superuser', 'last_login',
+        fields = ['url', 'uuid', 'profile', 'email', 'password', 'last_login',
                   'joined']
         read_only_fields = ['uuid', 'profile', 'last_login', 'joined']
         extra_kwargs = {
