@@ -44,7 +44,7 @@ class UserCreateViewTest(ViewSetTestCase):
         response = self.client.post(self.url, self.data)
 
         user = User.objects.first()
-        context = {'request': self.get_request(self.url)}
+        context = {'request': self.get_fake_request(self.url)}
         expected_data = UserCreateSerializer(user, context=context).data
 
         self.assertSequenceEqual(response.data, expected_data)

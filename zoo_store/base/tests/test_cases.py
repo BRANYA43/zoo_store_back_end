@@ -51,6 +51,7 @@ class ModelTestCaseTest(ModelTestCase):
         class Model(models.Model):
             field1 = models.Field()
             field2 = models.Field()
+            field2 = models.IntegerField()
 
             class Meta:
                 abstract = True

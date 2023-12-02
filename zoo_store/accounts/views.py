@@ -18,7 +18,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.prefetch_related(
         Prefetch('profile', queryset=Profile.objects.all())
-    )
+    ).all()
     create_serializer_class = serializers.UserCreateSerializer
     manage_serializer_class = serializers.UserSerializer
     create_permissions_classes = [rest_permissions.AllowAny]
