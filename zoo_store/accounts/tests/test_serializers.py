@@ -1,85 +1,11 @@
 from accounts.models import Profile
-from accounts.serializers import (
-    AuthTokenCreateSerializer,
-    AuthTokenSerializer,
-    ProfileSerializer,
-    UserCreateSerializer,
-    UserSerializer,
-)
+from accounts.serializers import ProfileSerializer, UserCreateSerializer, UserSerializer
 from accounts.tests import create_test_user
 from base.test_cases import ModelTestCase, SerializerTestCase
 from django.contrib.auth import get_user_model
-from rest_framework.authtoken.models import Token
-from rest_framework.exceptions import AuthenticationFailed
 
 User = get_user_model()
 get_model_fields = ModelTestCase.get_fields
-
-
-class AuthTokenCreateSerializerTest(SerializerTestCase):
-
-    def test_serializer_inherit_AuthTokenSerializer(self):
-        self.assertTrue(issubclass(AuthTokenCreateSerializer, AuthTokenSerializer))
-
-    def test_serializer_has_necessary_model_fields(self):
-        necessary_fields = ['key', 'email', 'password']
-        serializer_fields = self.get_field_names(AuthTokenCreateSerializer)
-
-        self.assertFieldNamesEqual(serializer_fields, necessary_fields)
-
-    def test_email_is_write_only(self):
-        email = self.get_field(AuthTokenCreateSerializer, 'email')
-        self.assertTrue(email.write_only)
-
-    def test_password_is_write_only(self):
-        password = self.get_field(AuthTokenCreateSerializer, 'password')
-        self.assertTrue(password.write_only)
-
-    def test_serializer_creates_token_if_credentials_is_valid(self):
-        password = 'qwe123!@#'
-        user = create_test_user(password=password)
-        data = {'email': user.email, 'password': password}
-
-        serializer = AuthTokenCreateSerializer(data=data)
-        serializer.is_valid()
-        serializer.save()
-
-        self.assertEqual(Token.objects.count(), 1)
-
-        token = Token.objects.first()
-
-        self.assertEqual(token.user.uuid, user.uuid)
-
-    def test_serializer_doesnt_create_token_if_credentials_is_empty(self):
-        data = {'email': '', 'password': ''}
-        serializer = AuthTokenCreateSerializer(data=data)
-        serializer.is_valid()
-
-        with self.assertRaises(AssertionError):
-            serializer.save()
-
-    def test_not_existed_credentials_are_invalid(self):
-        data = {'email': 'notexist@test.com', 'password': 'qwe123!@#'}
-        serializer = AuthTokenCreateSerializer(data=data)
-
-        with self.assertRaises(AuthenticationFailed):
-            serializer.is_valid()
-
-
-class AuthTokenSerializerTest(SerializerTestCase):
-    def test_serializer_has_necessary_model_fields(self):
-        necessary_fields = ['key']
-        serializer_fields = self.get_field_names(AuthTokenSerializer)
-
-        self.assertFieldNamesEqual(serializer_fields, necessary_fields)
-
-    def test_key_is_read_only(self):
-        key = self.get_field(AuthTokenSerializer, 'key')
-        self.assertTrue(key.read_only)
-
-    def test_key_has_label_as_token(self):
-        key = self.get_field(AuthTokenSerializer, 'key')
-        self.assertEqual(key.label, 'token')
 
 
 class ProfileSerializerTest(SerializerTestCase):
