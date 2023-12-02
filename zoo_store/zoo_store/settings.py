@@ -135,7 +135,6 @@ BATON = {
     'CHANGELIST_FILTERS_ALWAYS_OPEN': False,
     'CHANGELIST_FILTERS_FORM': True,
     'MENU_ALWAYS_COLLAPSED': False,
-    'MENU_TITLE': 'Menu',
     'MESSAGES_TOASTS': False,
     'GRAVATAR_DEFAULT_IMG': 'retro',
     'GRAVATAR_ENABLED': True,
@@ -145,7 +144,14 @@ BATON = {
         'label': 'Search contents...',
         'url': '/search/',
     },
-    'MENU': (),
+    'MENU': (
+        {'type': 'title', 'label': 'Accounts'},
+        {'type': 'model', 'label': 'Users', 'name': 'user', 'app': 'accounts'},
+        {'type': 'title', 'label': 'Tokens'},
+        {'type': 'free', 'label': 'Auth Tokens', 'url': '/admin/authtoken/tokenproxy/'},
+        {'type': 'free', 'label': 'Black List of Tokens', 'url': '/admin/token_blacklist/blacklistedtoken/'},
+        {'type': 'free', 'label': 'Outstanding Tokens', 'url': '/admin/token_blacklist/outstandingtoken/'},
+    ),
 }
 
 SIMPLE_JWT = {
