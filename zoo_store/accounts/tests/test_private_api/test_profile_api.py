@@ -20,7 +20,7 @@ class ProfileRetrieveViewTest(ViewSetTestCase):
 
         response = self.client.get(self.url)
 
-        self.assertStatusCodeEqual(response, status.HTTP_403_FORBIDDEN)
+        self.assertStatusCodeEqual(response, status.HTTP_401_UNAUTHORIZED)
         self.assertUserIs(response, 'anonymous')
 
     def test_view_is_not_available_for_not_owner(self, mock):
@@ -70,7 +70,7 @@ class ProfileUpdateViewTest(ViewSetTestCase):
 
         response = self.client.patch(self.url, self.data, patrial=True, format='json')
 
-        self.assertStatusCodeEqual(response, status.HTTP_403_FORBIDDEN)
+        self.assertStatusCodeEqual(response, status.HTTP_401_UNAUTHORIZED)
         self.assertUserIs(response, 'anonymous')
 
     def test_view_is_not_available_for_not_owner(self, mock):

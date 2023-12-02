@@ -16,10 +16,12 @@ class TokenCreateAndRefreshTest(ViewSetTestCase):
     
     def test_create_token_for_unregister_user(self):
         response = self.client.post(self.create_url, self.data)
-        
+
+        response = self.client.post(self.url, self.data)
+
         self.assertStatusCodeEqual(response, status.HTTP_401_UNAUTHORIZED)
         self.assertUserIs(response, 'anonymous')
-    
+
     def test_create_token_for_registered_user(self):
         create_test_user(**self.data)
         
@@ -41,4 +43,10 @@ class TokenCreateAndRefreshTest(ViewSetTestCase):
         self.assertStatusCodeEqual(refresh_response, status.HTTP_200_OK)
         self.assertIn('access', refresh_response.data)
 
+        create_test_user('rick.sanchez@test.com', 'qwe123!@#')
 
+        response = self.client.post(self.url, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('access', response.data)
+        self.assertIn('refresh', response.data)

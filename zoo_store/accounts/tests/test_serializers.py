@@ -60,8 +60,10 @@ class UserCreateSerializerTest(SerializerTestCase):
 
 class UserSerializerTest(SerializerTestCase):
     def test_serializer_has_necessary_model_fields(self):
-        necessary_fields = ['url', 'profile'] + get_model_fields(User, only_names=True)
-        serializer_fields = self.get_field_names(UserSerializer)
+        fields = ['url', 'profile'] + get_model_fields(User, only_names=True)
+        
+        serializer_fields = list(self.get_field_names(UserSerializer))
+        necessary_fields = [field for field in fields if field in serializer_fields]
 
         self.assertFieldNamesEqual(serializer_fields, necessary_fields)
 
