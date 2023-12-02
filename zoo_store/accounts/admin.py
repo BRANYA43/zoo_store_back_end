@@ -8,26 +8,26 @@ User = get_user_model()
 
 class ProfileInline(admin.StackedInline):
     model = Profile
+    fields = ('uuid', 'first_name', 'last_name')
+    readonly_fields = ('uuid',)
+    can_delete = False
+    extra = 0
 
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'email', 'is_active', 'is_staff', 'joined')
     search_fields = ('uuid', 'email', 'is_active', 'is_staff', 'joined')
-    list_filter = ('uuid', 'email', 'is_active', 'is_staff', 'joined')
+    list_filter = ('is_active', 'is_staff', 'joined')
     exclude = [
         'groups',
         'user_permissions'
     ]
 
+    fields = ('uuid', 'email', 'is_active', 'is_staff', 'last_login', 'joined')
+    readonly_fields = ('uuid', 'is_active', 'last_login', 'joined')
+
     inlines = [ProfileInline]
-
-
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('uuid', 'user', 'first_name', 'last_name')
-    search_fields = ('uuid', 'user', 'first_name', 'last_name')
-    list_filter = ('uuid', 'user', 'first_name', 'last_name')
 
 
 admin.site.unregister(Group)
