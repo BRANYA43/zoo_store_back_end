@@ -14,39 +14,29 @@ class TokenCreateAndRefreshTest(ViewSetTestCase):
         self.create_url = reverse('token_obtain_pair')
         self.refresh_url = reverse('token_refresh')
     
-    def test_create_token_for_unregister_user(self):
+    def test_create_token_for_unregister_user(self) :
         response = self.client.post(self.create_url, self.data)
-
-        response = self.client.post(self.url, self.data)
-
+        
         self.assertStatusCodeEqual(response, status.HTTP_401_UNAUTHORIZED)
         self.assertUserIs(response, 'anonymous')
-
-    def test_create_token_for_registered_user(self):
+    
+    def test_create_token_for_registered_user(self) :
         create_test_user(**self.data)
         
         response = self.client.post(self.create_url, self.data)
         
         self.assertStatusCodeEqual(response, status.HTTP_200_OK)
         self.assertIsNotNone(response.data.get('access'))
-
-    def test_refresh_token_for_registered_user(self):
+    
+    def test_refresh_token_for_registered_user(self) :
         create_test_user(**self.data)
-
+        
         created_response = self.client.post(self.create_url, self.data)
         refresh_token = created_response.data.get('refresh')
-
+        
         self.assertIsNotNone(refresh_token)
-
-        refresh_response = self.client.post(self.refresh_url, {'refresh': refresh_token})
-
+        
+        refresh_response = self.client.post(self.refresh_url, {'refresh' : refresh_token})
+        
         self.assertStatusCodeEqual(refresh_response, status.HTTP_200_OK)
         self.assertIn('access', refresh_response.data)
-
-        create_test_user('rick.sanchez@test.com', 'qwe123!@#')
-
-        response = self.client.post(self.url, self.data)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('access', response.data)
-        self.assertIn('refresh', response.data)
