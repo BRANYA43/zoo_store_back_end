@@ -14,9 +14,9 @@ SECRET_KEY = env.get('SECRET_KEY')
 
 DEBUG = env.get('DEBUG', '').lower() == 'true'
 
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG
-# }
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG
+}
 
 ALLOWED_HOSTS = env.get('ALLOWED_HOSTS', '').split()
 
