@@ -17,6 +17,7 @@ repos:
           '--profile=black',
           '--line-length=120',
           '-m',
+          '3',
           '--trailing-comma',
           '.'
         ]
