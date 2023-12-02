@@ -3,12 +3,14 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 
+User = get_user_model()
+
 
 class ProfileInline(admin.StackedInline):
     model = Profile
 
 
-@admin.register(get_user_model())
+@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'email', 'is_active', 'is_staff', 'joined')
     search_fields = ('uuid', 'email', 'is_active', 'is_staff', 'joined')

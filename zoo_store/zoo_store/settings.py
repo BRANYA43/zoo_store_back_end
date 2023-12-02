@@ -4,6 +4,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+# from rest_framework_simplejwt.models import
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / '../.env')
@@ -19,6 +21,8 @@ DEBUG = env.get('DEBUG', '').lower() == 'true'
 ALLOWED_HOSTS = env.get('ALLOWED_HOSTS', '').split()
 
 INSTALLED_APPS = [
+    'baton',  # Don't touch. This app must be before django.contrib.admin
+
     # Default apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,6 +39,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     # Project apps
     'accounts',
+
+    'baton.autodiscover',  # Don't touch. This app must be the end
 ]
 
 MIDDLEWARE = [
@@ -67,7 +73,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'zoo_store.wsgi.application'
 
-
 # Database
 
 DATABASES = {
@@ -76,7 +81,6 @@ DATABASES = {
         'NAME': BASE_DIR / '../db.sqlite3',
     }
 }
-
 
 # Password validation
 
@@ -95,7 +99,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 
 LANGUAGE_CODE = 'en-us'
@@ -103,23 +106,47 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = 'static/'
-
 
 # Media files
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+BATON = {
+    'SITE_HEADER': 'Zoo',
+    'SITE_TITLE': 'Zoo',
+    'INDEX_TITLE': 'Site administration',
+    'SUPPORT_HREF': 'https://github.com/otto-torino/django-baton/issues',
+    'COPYRIGHT': 'copyright © 2023 <a href="https://www.otto.to.it">Otto srl</a>',  # noqa
+    'POWERED_BY': '<a href="https://www.otto.to.it">Otto srl</a>',
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'SHOW_MULTIPART_UPLOADING': True,
+    'ENABLE_IMAGES_PREVIEW': True,
+    'CHANGELIST_FILTERS_IN_MODAL': True,
+    'CHANGELIST_FILTERS_ALWAYS_OPEN': False,
+    'CHANGELIST_FILTERS_FORM': True,
+    'MENU_ALWAYS_COLLAPSED': False,
+    'MENU_TITLE': 'Menu',
+    'MESSAGES_TOASTS': False,
+    'GRAVATAR_DEFAULT_IMG': 'retro',
+    'GRAVATAR_ENABLED': True,
+    'LOGIN_SPLASH': '/static/core/img/login-splash.png',
+    'FORCE_THEME': None,
+    'SEARCH_FIELD': {
+        'label': 'Search contents...',
+        'url': '/search/',
+    },
+    'MENU': (),
+}
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -155,7 +182,6 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
-
 
 if DEBUG:
     INSTALLED_APPS += [
